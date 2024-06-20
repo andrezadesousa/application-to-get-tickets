@@ -1,4 +1,5 @@
-import { View, Image, StyleSheet, StatusBar } from "react-native";
+import { useState } from "react";
+import { View, Image, StyleSheet, StatusBar, Alert } from "react-native";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Link } from "expo-router"; //como se fosse um link da web
@@ -8,6 +9,18 @@ import { themeStyle } from "@src/common/styles";
 import { Input } from "@src/components/input";
 import { Button } from "@src/components/button";
 export default function Home() {
+  const [code, setCode] = useState("");
+
+  function handleAccessCredential() {
+    // verificar se o código não foi digitado
+    // .trim remove os espaços
+    if (!code.trim()) {
+      return Alert.alert(
+        "Ingresso inválida",
+        "Por favor, informe o código do ingresso"
+      );
+    }
+  }
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
@@ -23,9 +36,12 @@ export default function Home() {
             size={20}
             color={themeStyle.colors.gray[200]}
           />
-          <Input.Field placeholder="Código do ingresso" />
+          <Input.Field
+            placeholder="Código do ingresso"
+            onChangeText={setCode}
+          />
         </Input>
-        <Button title="Acessar credencial" />
+        <Button title="Acessar credencial" onPress={handleAccessCredential} />
         <Link href="/register" style={styles.register}>
           Ainda não possui ingresso?
         </Link>
